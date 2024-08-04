@@ -1,0 +1,63 @@
+<!-- HERE the original HTML code of the Volleyball or Tabletennis Scoreboard. 
+
+
+!!!!------ REMEMBER --------!!!!
+on Flexyscore 
+YOU WILL NOT BE ABLE TO MODIFY HTML PART! -->
+<head>
+    <link rel="shortcut icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico">
+    <!--<link rel="stylesheet" href="https://www.live.flexyscore.net/dirette/temp/css/volleypingpong.css"> -->
+    <link rel="canonical" href="https://codepen.io/Flexyscore/pen/gOwbBge">
+    <link type="text/css" rel="stylesheet" href="/static/styles/scoreboard.css" />
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" 
+    integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+    <script>
+        window.onload = function () {
+            const socket = io();
+            let socketid = undefined;
+            const socketURL = "{{ url_for('view_scoreboard') }}";
+            socket.connect(socketURL);
+            socket.on("updateBoard", function(awayServe, homeSets, homePoints, awaySets, awayPoints) {
+                if (parseInt(awayServe)) {
+                    document.getElementById("awayservice").style.display = "inline-block"
+                    document.getElementById("homeservice").style.display = "none";
+                } else {
+                    document.getElementById("homeservice").style.display = "inline-block"
+                    document.getElementById("awayservice").style.display = "none";
+                }
+                document.getElementById('points_1').innerHTML = homePoints
+                document.getElementById('set_1').innerHTML = homeSets
+                document.getElementById('points_2').innerHTML = awayPoints
+                document.getElementById('set_2').innerHTML = awaySets
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <section id="boxes">
+        <div class="container containervolley"><!-- or class="container containerpingpong" -->
+            <div class="label labelpoints">Pt</div>
+            <div class="label labelsets">Set</div>
+            <div class="box boxhometeam" id="team_1">VIVAN/ALEX</div>
+            <div class="box numbers boxhomepoints" id="points_1">0</div>
+            <div class="box numbers boxhomesets" id="set_1">0</div>
+            <div class="box boxawayteam" id="team_2">AWAY</div>
+            <div class="box numbers boxawaypoints" id="points_2">0</div>
+            <div class="box numbers boxawaysets" id="set_2">0</div>
+            
+            <div class="box boxservice boxhomeservice">
+                <span id="homeservice">
+                    <svg data-v-114737eb="" aria-hidden="true" focusable="false" data-icon="shuttlecock" role="img" viewBox="0 0 512 512" version="1.1" id="svg234" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"><defs data-v-114737eb="" id="defs238"></defs><path data-v-114737eb="" fill="#BE0000FF" d="m 117.61496,287.78687 -27.946077,28.58431 c -31.67838,32.38796 -32.578118,84.02045 -2.050054,117.53841 0.353155,0.38966 0.720963,0.76433 1.100494,1.12701 15.362947,14.6361 35.396027,22.6945 56.412367,22.6945 22.10365,0 42.88554,-8.80174 58.51517,-24.78965 l 27.95635,-28.59181 157.55663,-65.88943 c 0.0673,-0.0269 0.13482,-0.0554 0.20223,-0.0824 l 83.97158,-35.11705 c 27.01265,-11.28955 35.81219,-29.56445 38.43814,-42.90268 4.18657,-21.27076 -4.82987,-45.74719 -24.11853,-65.4713 -15.95642,-16.31912 -38.45133,-24.54687 -62.02914,-24.17819 1.76138,-21.14488 -4.90899,-42.89969 -20.11807,-59.73586 -0.39419,-0.43312 -0.80302,-0.85125 -1.22798,-1.25589 C 387.81316,94.159021 366.53893,87.34752 345.86693,89.139941 346.23914,65.008209 338.17961,42.01697 322.22465,25.697853 306.05135,9.1524337 286.61468,0 268.49684,0 265.00779,0 261.5671,0.34020018 258.20994,1.0310913 245.16667,3.7182232 227.29795,12.716293 216.25345,40.359432 l -34.26476,85.950748 c -0.0248,0.0584 -0.0469,0.1169 -0.0703,0.17535 z m 110.92855,69.26746 90.45,-71.07337 23.07373,23.59821 z m -34.65454,-29.46704 -1.41995,-1.45222 72.03469,-95.88399 23.13966,23.66564 z m -29.65031,-37.6693 45.93789,-115.23194 22.97702,23.50229 z m 8.32036,111.23048 c -7.32537,7.4934 -17.06716,11.62076 -27.42879,11.62076 -9.59671,0 -18.75382,-3.58035 -25.87259,-10.09511 -13.77008,-15.72115 -13.17368,-39.51268 1.49468,-54.51145 l 15.54172,-15.8935 51.80818,52.98581 z M 456.56689,226.68122 c 9.71686,9.93475 13.08722,19.82004 12.10542,24.80164 -0.96128,4.88571 -7.913,8.46005 -11.97647,10.15956 l -70.5019,29.48202 -32.04179,-32.76863 45.42062,-35.69254 c 20.46682,-10.62415 44.2322,-9.03405 56.99412,4.01795 z m -82.77146,-84.5345 c 11.0782,12.91712 10.7104,32.17215 -0.78543,44.69062 l -50.20945,39.45423 -31.28567,-31.9968 38.57734,-51.35075 c 12.24171,-11.75413 31.07172,-12.12581 43.70321,-0.7973 z M 256.95411,57.351456 c 1.65734,-4.151341 5.15371,-11.261076 9.93082,-12.244209 4.8621,-1.001118 14.53502,2.441348 24.24895,12.37909 12.76338,13.054994 14.3196,37.362073 3.93013,58.292623 l -34.8978,46.45307 -31.98318,-32.71018 z" id="path232" style="stroke-width: 1.48194;"></path></svg>
+                </span>
+            </div>
+            
+            <div class="box boxservice boxawayservice">
+                <!--<span id="awayservice" class="okservice"></span>-->
+                <span id='awayservice'>
+                    <svg data-v-114737eb="" aria-hidden="true" focusable="false" data-icon="shuttlecock" role="img" viewBox="0 0 512 512" version="1.1" id="svg234" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"><defs data-v-114737eb="" id="defs238"></defs><path data-v-114737eb="" fill="#BE0000FF" d="m 117.61496,287.78687 -27.946077,28.58431 c -31.67838,32.38796 -32.578118,84.02045 -2.050054,117.53841 0.353155,0.38966 0.720963,0.76433 1.100494,1.12701 15.362947,14.6361 35.396027,22.6945 56.412367,22.6945 22.10365,0 42.88554,-8.80174 58.51517,-24.78965 l 27.95635,-28.59181 157.55663,-65.88943 c 0.0673,-0.0269 0.13482,-0.0554 0.20223,-0.0824 l 83.97158,-35.11705 c 27.01265,-11.28955 35.81219,-29.56445 38.43814,-42.90268 4.18657,-21.27076 -4.82987,-45.74719 -24.11853,-65.4713 -15.95642,-16.31912 -38.45133,-24.54687 -62.02914,-24.17819 1.76138,-21.14488 -4.90899,-42.89969 -20.11807,-59.73586 -0.39419,-0.43312 -0.80302,-0.85125 -1.22798,-1.25589 C 387.81316,94.159021 366.53893,87.34752 345.86693,89.139941 346.23914,65.008209 338.17961,42.01697 322.22465,25.697853 306.05135,9.1524337 286.61468,0 268.49684,0 265.00779,0 261.5671,0.34020018 258.20994,1.0310913 245.16667,3.7182232 227.29795,12.716293 216.25345,40.359432 l -34.26476,85.950748 c -0.0248,0.0584 -0.0469,0.1169 -0.0703,0.17535 z m 110.92855,69.26746 90.45,-71.07337 23.07373,23.59821 z m -34.65454,-29.46704 -1.41995,-1.45222 72.03469,-95.88399 23.13966,23.66564 z m -29.65031,-37.6693 45.93789,-115.23194 22.97702,23.50229 z m 8.32036,111.23048 c -7.32537,7.4934 -17.06716,11.62076 -27.42879,11.62076 -9.59671,0 -18.75382,-3.58035 -25.87259,-10.09511 -13.77008,-15.72115 -13.17368,-39.51268 1.49468,-54.51145 l 15.54172,-15.8935 51.80818,52.98581 z M 456.56689,226.68122 c 9.71686,9.93475 13.08722,19.82004 12.10542,24.80164 -0.96128,4.88571 -7.913,8.46005 -11.97647,10.15956 l -70.5019,29.48202 -32.04179,-32.76863 45.42062,-35.69254 c 20.46682,-10.62415 44.2322,-9.03405 56.99412,4.01795 z m -82.77146,-84.5345 c 11.0782,12.91712 10.7104,32.17215 -0.78543,44.69062 l -50.20945,39.45423 -31.28567,-31.9968 38.57734,-51.35075 c 12.24171,-11.75413 31.07172,-12.12581 43.70321,-0.7973 z M 256.95411,57.351456 c 1.65734,-4.151341 5.15371,-11.261076 9.93082,-12.244209 4.8621,-1.001118 14.53502,2.441348 24.24895,12.37909 12.76338,13.054994 14.3196,37.362073 3.93013,58.292623 l -34.8978,46.45307 -31.98318,-32.71018 z" id="path232" style="stroke-width: 1.48194;"></path></svg>
+                </span>
+            </div>
+        </div>
+    </section>
+<body>

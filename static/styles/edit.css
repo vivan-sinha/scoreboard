@@ -1,0 +1,76 @@
+:root {
+    --buttonBreakVisible: block
+}
+
+body {
+    background-color: #F7F9F2;
+}
+
+.title-grid {
+    display: grid;
+    height: 130px; /* Make the div as tall as the viewport */
+    grid-template-columns: repeat(2, 1fr); /* Divide space into 2 equal columns */
+}
+.form-grid {
+    display:grid;
+    grid-template-columns:repeat(1,1fr)
+}
+.add-button-grid {
+    display: grid;
+    height: calc(98vh - 30vh - 130px - 5vh); /* Make the div as tall as the viewport */
+    grid-template-columns: repeat(2, 1fr); /* Divide space into 2 equal columns */
+}
+.sub-button-grid {
+    display: grid;
+    height: calc(30vh - 10vh); /* Make the div as tall as the viewport */
+    grid-template-columns: repeat(2, 1fr); /* Divide space into 2 equal columns */
+}
+
+.grid-title {
+    text-align: center;
+    height: 50px;
+    display:inline-grid
+}
+
+.grid-button {
+    border-width: 0;
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 80px;
+    margin-bottom:4px;
+    margin-left:2px;
+    margin-right:2px;
+}
+.add {
+    background-color: #91DDCF;
+}
+.subtract {
+    background-color: #F19ED2;
+}
+.serve {
+    background-color: #F7F9F2;
+}
+
+.grid-button:hover {
+    background-color: #3e8e41;
+}
+.add:hover {
+    background-color: #cbf1e9;
+    color:black
+}
+.subtract:hover {
+    background-color: #E8C5E5;
+    color:black
+}
+
+.nextScore {
+    font-size:40px
+}
+
+.buttonBreak {
+    display: var(--buttonBreakVisible)
+}

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link type="text/css" rel="stylesheet" href="/static/styles/edit.css" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid of Buttons</title>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" 
+    integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+    <script>
+        window.onload = function () {
+            let portrait = window.matchMedia("(orientation: portrait)");
+
+            portrait.addEventListener("change", function(e) {
+                if(e.matches) {
+                    // Portrait mode
+                    document.documentElement.style.setProperty("--buttonBreakVisible", 'block')
+                } else {
+                    // Landscape
+                    document.documentElement.style.setProperty("--buttonBreakVisible", 'none')
+                }
+            })
+
+            
+            const socket = io();
+            const socketURL = "{{ url_for('home') }}";
+            socket.connect(socketURL);
+
+            // socket.emit('update', (homePoints, awayPoints, homeSets, awaySets, awayServe));
+            let set = 1;
+
+            let firstSetHomePoints = 0;
+            let secondSetHomePoints = 0;
+
+            let firstSetAwayPoints = 0;
+            let secondSetAwayPoints = 0;
+
+            let homePoints = 0;
+            let awayPoints = 0;
+            let homeSets = 0;
+            let awaySets = 0;
+            
+            let awayServe = 0;
+
+            function updateBoard() {
+                socket.emit('update', {'homePoints': homePoints, 
+                                        'awayPoints': awayPoints, 
+                                        'homeSets': homeSets, 
+                                        'awaySets': awaySets, 
+                                        'awayServe': awayServe});
+            }
+            function updateHTML() {
+                document.getElementById('curHomeScore').innerHTML = "[" + homeSets + ", " + homePoints + "]";
+                document.getElementById('curAwayScore').innerHTML = "[" + awaySets + ", " + awayPoints + "]";
+
+                if (homePoints >= 20 && homePoints > awayPoints) {
+                    document.getElementById('nextHomeScore').innerHTML = "[" + (homeSets + 1) + ", " + 0 + "]";
+                } else {
+                    document.getElementById('nextHomeScore').innerHTML = "[" + homeSets + ", " + (homePoints + 1) + "]";
+                }
+
+                if (awayPoints >= 20 && homePoints < awayPoints) {
+                    document.getElementById('nextAwayScore').innerHTML = "[" + (awaySets + 1) + ", " + 0 + "]";
+                } else {
+                    document.getElementById('nextAwayScore').innerHTML = "[" + awaySets + ", " + (awayPoints + 1) + "]";
+                }
+
+                prevSetHome = 0;
+                prevSetAway = 0;
+                if (set == 3) {
+                    prevSetHome = secondSetHomePoints;
+                    prevSetAway = secondSetAwayPoints;
+                }
+                if (set == 2) {
+                    prevSetHome = firstSetHomePoints;
+                    prevSetAway = firstSetAwayPoints;
+                }
+
+                if (awayPoints <= 0) {
+                    if (prevSetAway > prevSetHome) {
+                        document.getElementById('prevAwayScore').innerHTML = "[" + (awaySets - 1) + ", " + (prevSetAway - 1) + "]";
+                    } else {
+                        document.getElementById('prevAwayScore').innerHTML = "[" + awaySets + ", " + 0 + "]";
+                    }
+                } else {
+                    document.getElementById('prevAwayScore').innerHTML = "[" + awaySets + ", " + (awayPoints-1) + "]";
+                }
+
+                if (homePoints <= 0) {
+                    if (prevSetAway < prevSetHome) {
+                        document.getElementById('prevHomeScore').innerHTML = "[" + (homeSets - 1) + ", " + (prevSetHome - 1) + "]";
+                    } else {
+                        document.getElementById('prevHomeScore').innerHTML = "[" + homeSets + ", " + 0 + "]";
+                    }
+                } else {
+                    document.getElementById('prevHomeScore').innerHTML = "[" + homeSets + ", " + (homePoints-1) + "]";
+                }
+
+            }
+
+            let addHomeForm = document.getElementById('addHome');
+            addHomeForm.onsubmit = function(event) {
+                event.preventDefault();
+                if (homePoints >= 20 && homePoints > awayPoints) {
+                    if (set == 1) {
+                        firstSetHomePoints = homePoints + 1;
+                        firstSetAwayPoints = awayPoints;
+                    }
+                    if (set == 2) {
+                        secondSetHomePoints = homePoints + 1;
+                        secondSetAwayPoints = awayPoints;
+                    }
+
+                    homePoints = 0;
+                    awayPoints = 0;
+
+                    homeSets += 1;
+                    set += 1;
+                } else {
+                    homePoints +=1;
+                }
+                awayServe = 0;
+                updateHTML();
+                updateBoard()
+            }
+            let addAwayForm = document.getElementById('addAway');
+            addAwayForm.onsubmit = function(event) {
+                event.preventDefault();
+                if (awayPoints >= 20 && awayPoints > homePoints) {
+                    if (set == 1) {
+                        firstSetAwayPoints = awayPoints + 1;
+                        firstSetHomePoints = homePoints;
+                    }
+                    if (set == 2) {
+                        secondSetAwayPoints = awayPoints + 1;
+                        secondSetHomePoints = homePoints;
+                    }
+                    
+                    awayPoints = 0;
+                    homePoints = 0;
+
+                    awaySets += 1;
+                    set += 1;
+                } else {
+                    awayPoints +=1;
+                }
+                awayServe = 1;
+                updateHTML();
+                updateBoard();
+            }
+            let subHomeForm = document.getElementById('subHome');
+            subHomeForm.onsubmit = function(event) {
+                event.preventDefault();
+                prevSetHome = 0;
+                prevSetAway = 0;
+                if (set == 3) {
+                    prevSetHome = secondSetHomePoints;
+                    prevSetAway = secondSetAwayPoints;
+                }
+                if (set == 2) {
+                    prevSetHome = firstSetHomePoints;
+                    prevSetAway = firstSetAwayPoints;
+                }
+                if (homePoints <= 0) {
+                    if (prevSetAway < prevSetHome) {
+                        homePoints = prevSetHome - 1;
+                        awayPoints = prevSetAway;
+                        homeSets -= 1;
+                        set -= 1;
+                    } else {
+                        homePoints = 0
+                    }
+                } else {
+                    homePoints -= 1;
+                }
+                updateHTML();
+                updateBoard()
+            }
+            let subAwayForm = document.getElementById('subAway');
+            subAwayForm.onsubmit = function(event) {
+                event.preventDefault();
+                prevSetHome = 0;
+                prevSetAway = 0;
+                if (set == 3) {
+                    prevSetHome = secondSetHomePoints;
+                    prevSetAway = secondSetAwayPoints;
+                }
+                if (set == 2) {
+                    prevSetHome = firstSetHomePoints;
+                    prevSetAway = firstSetAwayPoints;
+                }
+                if (awayPoints <= 0) {
+                    if (prevSetAway > prevSetHome) {
+                        awayPoints = (prevSetAway - 1);
+                        homePoints = prevSetHome;
+                        awaySets -= 1;
+                        set -= 1;
+                    } else {
+                        awayPoints = 0;
+                    }
+                } else {
+                    awayPoints -= 1
+                }
+                updateHTML();
+                updateBoard()
+            }
+
+
+        }
+    </script>
+</head>
+<body>
+    <div class="title-grid">
+        <div class="grid-title">
+            <h2>{{home}}<br/><br/><span id='curHomeScore'>[0, 0]</span></h2>
+        </div>
+        <div class="grid-title">
+            <h2>{{away}}<br/><br/><span id='curAwayScore'>[0, 0]</span></h2>
+        </div>
+    </div>
+    <div class="add-button-grid">
+        <form id='addHome' class='form-grid' method='POST'>
+            <button class="grid-button add" onclick='addHome()'>+1<br class="buttonBreak"/><span id='nextHomeScore' class="nextScore">[0, 1]</span></button>
+        </form>
+        <form id='addAway' class='form-grid' method='POST'>
+            <button class="grid-button add" onclick='addAway()'>+1<br class="buttonBreak"/><span id='nextAwayScore' class="nextScore">[0, 1]</span></button>
+        </form>
+        
+        <!-- <button class="grid-button serve">reset<span>0, 12</span></button>
+        <button class="grid-button serve">reset<span>0, 15</span></button> -->
+    </div>
+    <div class="sub-button-grid">
+        <form id='subHome' class='form-grid' method='POST'>
+            <button class="grid-button subtract" onclick='subHome()'>-1<br class="buttonBreak"/><span id='prevHomeScore' class="nextScore">[0, 0]</span></button>
+        </form>
+        <form id='subAway' class='form-grid' method='POST'>
+            <button class="grid-button subtract" onclick='subAway()'>-1<br class="buttonBreak"/><span id='prevAwayScore' class="nextScore">[0, 0]</span></button>
+        </form>
+    </div>
+
+    <!-- <script src="script.js"></script> This script is not needed in this version -->
+</body>
+</html>

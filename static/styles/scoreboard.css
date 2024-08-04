@@ -1,0 +1,208 @@
+:root {
+    --white: #fff;
+    --text: #333;
+    --textinverted: #eee;
+    --bkg: #eee;
+    --bkgwhite: #fff;
+    --bkggrey: #ccc;
+    --bkgdark: #333;
+    --bkgovertime: #900;
+    --yellow: #FCF506;
+    --red: #fc0303;
+    --linee: #999;
+    --homeServe:'true';
+    --awayServe:none;
+    }
+
+
+
+*{margin:0; padding:0;}
+strong, em {font-weight: normal; font-style: normal;}
+
+
+.container {width: 100%; display: grid; font-family:'Rubik', sans-serif; font-size: 3vw;}
+.box {text-align: center;}
+.boxhomepoints, .boxawaypoints, .space {font-weight: bold;}
+.boxmoment span {white-space: nowrap;}
+.space{text-align: center;}
+
+
+
+
+.boxhometeam, .boxawayteam {background: var(--bkg);}
+.boxtimer, .boxmoment {color: var(--textinverted);}
+.boxhomepoints, .boxawaypoints, .space {background: var(--bkggrey);}
+.boxtimer {background: var(--bkgdark);}
+.boxmoment {background: var(--bkgdark);}
+.boxovertimeon {background: var(--bkgovertime);}
+
+.container {width: auto; float: left; grid-template-columns: 18vw 7vw auto 10vw 10vw; font-size: 8vw;}
+
+
+.sgrlogo {grid-row: 2 / 4; grid-column: 1 / 2;}
+.boxhometeam{grid-row: 2 / 3; grid-column: 3 / 4;}
+.boxawayteam{grid-row: 3 / 4; grid-column: 3 / 4;}
+
+.labelpoints {grid-row: 1 / 2; grid-column: 4 / 5;}
+.labelsets {grid-row: 1 / 2; grid-column: 5 / 6;}
+
+.boxhomepoints{grid-row: 2 / 3; grid-column: 4 / 5;}
+.boxawaypoints{grid-row: 3 / 4; grid-column: 4 / 5;}
+
+.boxhomesets{grid-row: 2 / 3; grid-column: 5 / 6;}
+.boxawaysets{grid-row: 3 / 4; grid-column: 5 / 6;}
+
+.boxhomeservice{grid-row: 2 / 3; grid-column: 2 / 3;}
+.boxawayservice{grid-row: 3 / 4; grid-column: 2 / 3;}
+
+
+
+.sgrlogo {background-size: 90% auto !important;}
+.sgrlogo, .sgrlogo:before {border-bottom-left-radius: 20%; border-top-left-radius: 20%;}
+
+.boxhometeam, .boxawayteam {text-align: left; padding: 0 2vw 0 0; display: flex; align-items: center;}
+.label {font-size: 4vw; text-align: center;}
+
+.boxhomepoints, .boxawaypoints, .labelpoints {background-color: var(--bkggrey);}
+.boxhomesets, .boxawaysets, .labelsets {color: var(--textinverted); background-color: var(--bkgdark);}
+.boxhomesets, .boxawaysets { font-size: 5vw; padding-top: 2vw;}
+
+
+.boxservice {position: relative; background-color: var(--bkg);}
+.boxservice span {display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 5vw; height: 5vw; border-radius: 50%;}
+.okservice {background-color: var(--red);}
+/* INSTRUCTION and example for customize VOLLEYBALL and TABLETENNIS scoreboard:
+Each element has one or more classes, so you can control one or more elements at the same time.
+On the left you can read every single element with his class */
+
+/* Every scoreboard has a unique container (VOLLEYBALL = containervolley / BASKETBALL = containerbasket etc.. read them with your browser inspector). You can use them for override styles */
+
+/* this change the logo background color */
+/* .containervolley .sgrlogo:before {
+  background: black !important;
+} */
+
+/*this change background colors of team names and ball changing module*/
+.containervolley .boxhometeam, .containervolley .boxhomeservice {
+  background: white
+} 
+.containervolley .boxawayteam, .containervolley .boxawayservice {
+  background: Gainsboro;
+}
+
+/*this apply font, change size only on teams names and set caracter dimension (use "em" value to keep responsive layout) */
+.containervolley .boxhometeam, .containervolley .boxawayteam {
+  font-family:'Rubik', sans-serif;
+  font-weight:600;
+  font-size: .7em;
+  text-align:left;
+  color: black;
+  /* these are useful for next step */
+  position:relative;
+  padding: 0 5vw 0 2vw;
+}
+
+/*with this two pseudo element (:after) we can insert rectangular elements near names */
+/* .containervolley .boxhometeam:after, .containervolley .boxawayteam:after {
+  content:""; 
+  display: block; 
+  position:absolute; 
+  top:0; left:0; bottom:0; 
+  width: 3vw;
+} */
+/* and now we can give it a color */
+/* .containervolley .boxhometeam:after {
+  background: green;
+}
+.containervolley .boxawayteam:after {
+  background: blue;
+} */
+
+/*this insert an image on ball-chamnge signal*/
+.containervolley .okservice, .containervolley .homeservice, .containervolley .awayservice {
+  background: url(https://www.flexyscore.net/folder/volleyball.svg);
+}
+
+.containervolley .homeservice {
+    display:var(--homeServe)
+}
+.containervolley .awayservice {
+    display:var(--awayServe)
+}
+
+/*this change the background color and font color of POINTS column*/
+.labelpoints, .boxhomepoints, .boxawaypoints {
+  background: grey;
+  color: white;
+  font-size:.7em;
+  font-weight:300;
+  position:relative;
+  padding: 1vw 0 1vw 0
+}
+
+.boxhomepoints {
+    background: #838996
+}
+
+/*this change the background color and font color of SET column*/
+.labelsets, .boxhomesets, .boxawaysets {
+  background: #1589FF;
+  color: white;
+  font-weight: 400;
+  font-size:.7em;
+  position:relative;
+  padding: 1vw 0 1vw 0
+}
+
+.boxhomesets {
+    background: dodgerBlue;
+}
+
+/*if you don't want the labels of Set and points, you can hide them*/
+.labelsets, .labelpoints {
+  display:none;
+}
+
+/* ELEMENT POSITIONING */
+/* The positioning of the elements is dictated by a grid. You can find a great guide here: https://css-tricks.com/snippets/css/complete-guide-grid/ */ 
+.containervolley {
+  grid-template: auto / 18vw auto 7vw 10vw 10vw;
+}
+
+/*this change the position of change-ball module */
+.containervolley .boxservice {
+  grid-column: 3/4;
+}
+
+.containervolley .boxhometeam, .containervolley .boxawayteam {
+  grid-column: 1/3;
+}
+
+/*this swap the position of Points and Set*/
+.labelpoints, .boxhomepoints, .boxawaypoints {
+  grid-column: 5/6;
+}
+
+.labelsets, .boxhomesets, .boxawaysets {
+  grid-column: 4/5;
+}
+
+
+/*this insert some round corners*/
+/* .boxhomepoints {
+  border-top-right-radius: 3vw;
+}
+.boxawaypoints {
+  border-bottom-right-radius: 3vw;
+} */
+.containervolley .label .labelpoints:before {
+  border-bottom-left-radius: 5vw;
+  border-top-left-radius: 5vw;
+}
+
+
+/*-------------------------------------------------------------------
+---- UNDER: background color and a little spase from margins. PLEASE DO NOT CONSIDER THIS-*/
+/* body {background:#333;} */
+.containervolley {margin: 20px 20px;}
+
