@@ -31,3 +31,6 @@ def updateBoard(data):
 
 if __name__ == '__main__':
     socketio.run(app=app, port=8080)
+    
+    # edit at {url}/edit")
+    # to host, run app.py and run command in terminal: ngrok http 8080
